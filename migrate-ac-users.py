@@ -9,6 +9,11 @@ import re
 TOKEN = "15cc82e60de9d6765e8f0c95ab0ac4df7df114336e4963dc3e86cdb48728cdc7"
 BASE_URL = "http://master_regulations-activity-code.furyapps.io"
 
+## A db user and password needed to access regulations-activitycode mysql
+
+DB_USER = None
+DB_PASSWORD = None
+
 ### User structures
 
 class NeedTokenRefresh(Exception):
@@ -31,10 +36,15 @@ def ccc_body(row):
 ### SQL
 
 def get_connection():
+    if not DB_USER or not DB_PASSWORD:
+        print()
+        print("SET THE DB_USER AND DB_PASSWORD IN THE SCRIPT")
+        print()
+        sys.exit(1)
     connection = pymysql.connect(host='proxysql.slave.meliseginf.com',
                                 port=6612,
-                                user='aborello',
-                                password='ESTAESmipass6903@',
+                                user=DB_USER,
+                                password=DB_PASSWORD,
                                 database='activcode',
                                 cursorclass=pymysql.cursors.DictCursor)
     return connection
